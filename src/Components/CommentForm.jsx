@@ -1,20 +1,21 @@
 import { useState } from "react";
 
-export default function CommenForm() {
-  const [comments, setComments] = useState([]);
+export default function CommenForm({ comments, setComments }) {
   const [input, setInput] = useState("");
   const [error, setError] = useState();
+  const [name, setName] = useState("");
 
   async function addComment() {
-    if (!input.trim()) return;
+    if (!input.trim() || !name.trim()) return;
 
     // Creating Temporary Comment
     const tempId = Date.now();
-    const newComment = { id: tempId, text: input };
+    const newComment = { id: tempId, name: name, body: input };
 
     // Optimistically update UI
     setComments((prev) => [...prev, newComment]);
     setInput("");
+    setName("");
 
     try {
       const response = await fetch(
@@ -52,19 +53,24 @@ export default function CommenForm() {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <input
         type="text"
+        placeholder="Your name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <br />
+      <input
+        type="text"
+        placeholder="Add Comment"
         value={input}
         onChange={(e) => {
           setInput(e.target.value);
           setError(null);
         }}
       />
-      <button onClick={addComment}>Add Comment</button>
-
-      <ul>
-        {comments.map((comment) => (
-          <li key={comment.id}>{comment.text}</li>
-        ))}
-      </ul>
+      <br />
+      <button style={{ marginTop: "5px" }} onClick={addComment}>
+        Add Comment
+      </button>
     </div>
   );
 }

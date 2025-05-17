@@ -1,30 +1,4 @@
-import { useEffect, useState } from "react";
-import { fetchComments } from "../api/comments";
-
-export default function CommentList() {
-  const [comments, setComments] = useState([]);
-  const [error, setError] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    async function getComments() {
-      setIsLoading(true);
-      try {
-        const data = await fetchComments();
-
-        setComments(data);
-      } catch (error) {
-        setError(error.message);
-      }
-
-      setIsLoading(false);
-    }
-
-    getComments();
-  }, []);
-
-  console.log(comments);
-
+export default function CommentList({ isLoading, error, comments }) {
   return (
     <div>
       <h1>Comments</h1>
