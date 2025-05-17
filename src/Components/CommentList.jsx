@@ -1,4 +1,4 @@
-export default function CommentList({ isLoading, error, comments }) {
+export default function CommentList({ isLoading, error, comments, onDelete }) {
   return (
     <div>
       <h1>Comments</h1>
@@ -12,6 +12,7 @@ export default function CommentList({ isLoading, error, comments }) {
             <p>
               <strong>Comment:</strong> {comment.body}
             </p>
+            <button onClick={() => onDelete(comment.id)}>Delete Comment</button>
           </div>
         ))}
     </div>

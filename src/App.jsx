@@ -25,10 +25,38 @@ function App() {
 
     getComments();
   }, []);
+
+  async function handleDeleteComment(id) {
+    const originalComments = [...comments];
+
+    // Optimistically remove
+    setComments((prev) => prev.filter((comment) => comment.id !== id));
+
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/comments/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete comment");
+      }
+    } catch (error) {
+      setComments(originalComments);
+      setError(error.message);
+    }
+  }
   return (
     <>
       <CommenForm comments={comments} setComments={setComments} />
-      <CommentList comments={comments} isLoading={isLoading} error={error} />
+      <CommentList
+        comments={comments}
+        isLoading={isLoading}
+        error={error}
+        onDelete={handleDeleteComment}
+      />
     </>
   );
 }
