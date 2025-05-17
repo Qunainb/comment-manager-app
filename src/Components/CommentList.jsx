@@ -34,8 +34,10 @@ export default function CommentList() {
         !isLoading &&
         comments.map((comment) => (
           <div key={comment.id}>
-            <h2>{comment.name}</h2>
-            <p>{comment.body}</p>
+            <h2>Name: {comment.name}</h2>
+            <p>
+              <strong>Comment:</strong> {comment.body}
+            </p>
           </div>
         ))}
     </div>
